@@ -9,37 +9,35 @@ import SceneSetup from './Scene'
 export default function App() {
   const [inside, setInside] = useState(false)
   const [audio, setAudio] = useState(null)
-  const [isMuted, setIsMuted] = useState(false)
+  const [isMuted, setIsMuted] = useState(true)
   const isMobile = window.innerWidth < 768
   const canvasConfig = { antialias: false, depth: false, stencil: false, alpha: false }
 
   useEffect(() => {
     const audio = new Audio('/christmas.mp3')
     audio.loop = true
-    setAudio(audio)
-    audio.play().catch(error => {
-      console.error('Failed to play audio:', error)
-    })
-
-    return () => {
-      audio.pause()
-    }
+    audio.preload = 'auto'
+    audio.muted = true;
+    setAudio(audio);
   }, [])
 
   const toggleMute = () => {
     if (audio) {
       if (isMuted) {
-        audio.play()
+        audio.muted = false;
+        audio.play().catch(error => {
+          console.error('Failed to play audio:', error);
+        });
       } else {
-        audio.pause()
+        audio.pause();
       }
-      setIsMuted(!isMuted)
+      setIsMuted(!isMuted);
     }
   }
 
   return (
     <>
-      <button onClick={toggleMute} style={{ position: 'absolute', top: 10, left: 10, zIndex: 1000 }}>
+      <button onClick={toggleMute} style={{ position: 'absolute', top: 5, left: 15, zIndex: 1000, padding: '12px 12px', fontSize: '20px', width: '50px' }}>
         {isMuted ? (
           <span role="img" aria-label="Unmute">🔊</span>
         ) : (
