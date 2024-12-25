@@ -1,0 +1,35 @@
+{
+  "name": "3d-merry-christmas",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "main": "src/index.js",
+  "dependencies": {
+    "@react-three/drei": "latest",
+    "@react-three/fiber": "latest",
+    "@react-three/postprocessing": "latest",
+    "@types/three": "^0.157.2",
+    "gsap": "3.12.2",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "three": "latest",
+    "@lumaai/luma-web": "0.1.15",
+    "postprocessing": "6.35.4"
+  },
+  "devDependencies": {
+    "vite": "^5.0.11",
+    "@vitejs/plugin-react": "^4.2.1"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "install": "npm install --legacy-peer-deps"
+  },
+  "browserslist": [
+    ">1%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
