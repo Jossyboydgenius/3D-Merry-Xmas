@@ -26,6 +26,9 @@ importers:
       gsap:
         specifier: 3.12.2
         version: 3.12.2
+      maath:
+        specifier: ^0.10.8
+        version: 0.10.8(@types/three@0.157.2)(three@0.171.0)
       postprocessing:
         specifier: 6.35.4
         version: 6.35.4(three@0.171.0)
