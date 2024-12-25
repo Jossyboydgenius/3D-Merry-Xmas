@@ -1,5 +1,5 @@
 {
-  "name": "random-snow-globe-test-anderson",
+  "name": "3d-merry-christmas",
   "version": "1.0.0",
   "description": "",
   "keywords": [],
@@ -23,7 +23,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "install": "npm install --legacy-peer-deps"
   },
   "browserslist": [
     ">1%",
