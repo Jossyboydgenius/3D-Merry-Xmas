@@ -1,6 +1,11 @@
 # 3D Merry Christmas
 
+<img width="1582" alt="Screenshot 2024-12-25 at 5 56 26 AM" src="https://github.com/user-attachments/assets/d657c8e6-2c14-4811-b4af-d12dfb7c7a45" />
+
 A 3D Merry Christmas project using Three.js and React Three Fiber.
+
+<img width="1582" alt="Screenshot 2024-12-25 at 5 56 35 AM" src="https://github.com/user-attachments/assets/ba655212-d69f-4c86-8e52-32cad55ca707" />
+
 
 ## Table of Contents
 
