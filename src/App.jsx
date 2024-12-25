@@ -6,6 +6,14 @@ import SnowGlobeModel from './SnowGlobeModel'
 import Overlay from './Overlay'
 import SceneSetup from './Scene'
 
+// Play the background music automatically
+const backgroundAudio = new Audio('/christmas-soundtrack.mp3')
+backgroundAudio.loop = true
+backgroundAudio.preload = 'auto'
+backgroundAudio.play().catch(error => {
+  console.error('Failed to play background audio:', error)
+})
+
 export default function App() {
   const [inside, setInside] = useState(false)
   const [audio, setAudio] = useState(null)
@@ -14,24 +22,32 @@ export default function App() {
   const canvasConfig = { antialias: false, depth: false, stencil: false, alpha: false }
 
   useEffect(() => {
+    // Initialize the christmas.mp3 audio with mute/unmute functionality
     const audio = new Audio('/christmas.mp3')
     audio.loop = true
     audio.preload = 'auto'
-    audio.muted = true;
-    setAudio(audio);
+    audio.muted = true
+    setAudio(audio)
+    audio.play().catch(error => {
+      console.error('Failed to play audio:', error)
+    })
+
+    return () => {
+      audio.pause()
+    }
   }, [])
 
   const toggleMute = () => {
     if (audio) {
       if (isMuted) {
-        audio.muted = false;
+        audio.muted = false
         audio.play().catch(error => {
-          console.error('Failed to play audio:', error);
-        });
+          console.error('Failed to play audio:', error)
+        })
       } else {
-        audio.pause();
+        audio.pause()
       }
-      setIsMuted(!isMuted);
+      setIsMuted(!isMuted)
     }
   }
 
