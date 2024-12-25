@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber'
 import { MeshTransmissionMaterial, useGLTF, useTexture, Text, Billboard, Text3D } from '@react-three/drei'
 import * as THREE from 'three'
-import { useMemo, useRef, useLayoutEffect, useState } from 'react'
+import { useMemo, useRef, useLayoutEffect, useState, useEffect } from 'react'
 import { easing } from 'maath'
 import gsap from 'gsap'
 import SnowFlakes from './SnowFlakes'
@@ -76,18 +75,6 @@ export default function SnowGlobeModel(props) {
       fireWorksRef.current.visible = false
     }
   }, [insideMesh])
-
-  useEffect(() => {
-    const audio = new Audio('/christmas-soundtrack.mp3');
-    audio.loop = true;
-    audio.play().catch((error) => {
-      console.error("Audio playback failed:", error);
-    });
-
-    return () => {
-      audio.pause();
-    };
-  }, []);
 
   return (
     <group ref={groupRef} {...props} dispose={null}>
