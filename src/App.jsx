@@ -6,13 +6,20 @@ import SnowGlobeModel from './SnowGlobeModel'
 import Overlay from './Overlay'
 import SceneSetup from './Scene'
 
-// Play the background music automatically
+// Initialize the background audio
 const backgroundAudio = new Audio('/christmas-soundtrack.mp3')
 backgroundAudio.loop = true
 backgroundAudio.preload = 'auto'
-backgroundAudio.play().catch(error => {
-  console.error('Failed to play background audio:', error)
-})
+
+const playBackgroundAudio = () => {
+  backgroundAudio.play().catch(error => {
+    console.error('Failed to play background audio:', error)
+  })
+}
+
+document.addEventListener('click', playBackgroundAudio, { once: true })
+document.addEventListener('touchstart', playBackgroundAudio, { once: true })
+document.addEventListener('mousemove', playBackgroundAudio, { once: true })
 
 export default function App() {
   const [inside, setInside] = useState(false)
