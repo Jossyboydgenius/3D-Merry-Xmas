@@ -6,20 +6,21 @@ import SnowGlobeModel from './SnowGlobeModel'
 import Overlay from './Overlay'
 import SceneSetup from './Scene'
 
-// Initialize the background audio
+// Play the background music automatically
 const backgroundAudio = new Audio('/christmas-soundtrack.mp3')
 backgroundAudio.loop = true
 backgroundAudio.preload = 'auto'
 
+// Add event listener for user interaction
 const playBackgroundAudio = () => {
   backgroundAudio.play().catch(error => {
     console.error('Failed to play background audio:', error)
-  })
-}
+  });
+};
 
-document.addEventListener('click', playBackgroundAudio, { once: true })
-document.addEventListener('touchstart', playBackgroundAudio, { once: true })
-document.addEventListener('mousemove', playBackgroundAudio, { once: true })
+document.addEventListener('click', playBackgroundAudio);
+document.addEventListener('touchstart', playBackgroundAudio);
+document.addEventListener('mousemove', playBackgroundAudio);
 
 export default function App() {
   const [inside, setInside] = useState(false)
@@ -39,8 +40,15 @@ export default function App() {
       console.error('Failed to play audio:', error)
     })
 
+    // Play background audio on component mount
+    playBackgroundAudio();
+
     return () => {
       audio.pause()
+      // Remove event listeners on cleanup
+      document.removeEventListener('click', playBackgroundAudio);
+      document.removeEventListener('touchstart', playBackgroundAudio);
+      document.removeEventListener('mousemove', playBackgroundAudio);
     }
   }, [])
 
