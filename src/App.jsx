@@ -1,88 +1,83 @@
 import { Canvas } from '@react-three/fiber'
-import { Loader } from '@react-three/drei'
-import { useState, useEffect, Suspense } from 'react'
+import { Loader, PositionalAudio } from '@react-three/drei'
+import { useState, Suspense, useRef, useEffect } from 'react'
 import PostProcessingEffects from './PostProcessingEffects'
 import SnowGlobeModel from './SnowGlobeModel'
 import Overlay from './Overlay'
 import SceneSetup from './Scene'
 
-// Play the background music automatically
-const backgroundAudio = new Audio('/christmas-soundtrack.mp3')
-backgroundAudio.loop = true
-backgroundAudio.preload = 'auto'
-
-// Add event listener for user interaction
-const playBackgroundAudio = () => {
-  backgroundAudio.play().catch(error => {
-    console.error('Failed to play background audio:', error)
-  });
-};
-
-document.addEventListener('click', playBackgroundAudio);
-document.addEventListener('touchstart', playBackgroundAudio);
-document.addEventListener('mousemove', playBackgroundAudio);
-
 export default function App() {
+  const audioRef = useRef()
   const [inside, setInside] = useState(false)
-  const [audio, setAudio] = useState(null)
-  const [isMuted, setIsMuted] = useState(true)
   const isMobile = window.innerWidth < 768
   const canvasConfig = { antialias: false, depth: false, stencil: false, alpha: false }
+  const [ready, setReady] = useState(false)
+  const [isMuted, setIsMuted] = useState(false)
 
   useEffect(() => {
-    // Initialize the christmas.mp3 audio with mute/unmute functionality
-    const audio = new Audio('/christmas.mp3')
-    audio.loop = true
-    audio.preload = 'auto'
-    audio.muted = true
-    setAudio(audio)
-    audio.play().catch(error => {
-      console.error('Failed to play audio:', error)
-    })
+    const handleDocumentClick = (event) => {
+      if (!event.target.closest('.mute-button')) {
+        setReady(true)
+      }
+    }
 
-    // Play background audio on component mount
-    playBackgroundAudio();
+    document.addEventListener('click', handleDocumentClick)
 
     return () => {
-      audio.pause()
-      // Remove event listeners on cleanup
-      document.removeEventListener('click', playBackgroundAudio);
-      document.removeEventListener('touchstart', playBackgroundAudio);
-      document.removeEventListener('mousemove', playBackgroundAudio);
+      document.removeEventListener('click', handleDocumentClick)
     }
   }, [])
 
   const toggleMute = () => {
-    if (audio) {
-      if (isMuted) {
-        audio.muted = false
-        audio.play().catch(error => {
-          console.error('Failed to play audio:', error)
-        })
-      } else {
-        audio.pause()
-      }
-      setIsMuted(!isMuted)
+    setIsMuted(!isMuted)
+    if (audioRef.current) {
+      audioRef.current.setVolume(isMuted ? 1 : 0)
     }
   }
 
   return (
     <>
-      <button onClick={toggleMute} style={{ position: 'absolute', top: 5, left: 15, zIndex: 1000, padding: '12px 12px', fontSize: '20px', width: '50px' }}>
+      <button
+        onClick={toggleMute}
+        className="mute-button"
+        style={{ position: 'absolute', top: 5, left: 15, zIndex: 1000, padding: '12px 12px', fontSize: '20px', width: '50px' }}
+      >
         {isMuted ? (
           <span role="img" aria-label="Unmute">🔊</span>
         ) : (
           <span role="img" aria-label="Mute">🔇</span>
         )}
       </button>
-      <Canvas gl={canvasConfig} camera={{ position: [0, 0, 5], fov: 35, far: 20000 }} dpr={1}>
+      <Canvas
+        gl={canvasConfig}
+        camera={{ position: [0, 0, 5], fov: 35, far: 20000 }}
+        dpr={1}
+      >
         <Suspense fallback={null}>
           <SceneSetup isMobile={isMobile} />
-          <SnowGlobeModel isMobile={isMobile} position={[0, -1.1, 0]} scale={0.09} inside={inside} />
+          <SnowGlobeModel
+            isMobile={isMobile}
+            position={[0, -1.1, 0]}
+            scale={0.09}
+            inside={inside}
+          />
+
+          <PositionalAudio
+            ref={audioRef}
+            loop
+            url='/christmas-soundtrack.mp3'
+            distance={0.05}
+            autoplay={ready}
+            key={ready}
+          />
+
           <PostProcessingEffects />
         </Suspense>
       </Canvas>
-      <Overlay inside={inside} setInside={setInside} />
+      <Overlay
+        inside={inside}
+        setInside={setInside}
+      />
       <Loader />
     </>
   )
